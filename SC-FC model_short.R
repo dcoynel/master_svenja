@@ -2,7 +2,7 @@
 
 ############################ Read in data ###################################################
 
-setwd("C:/Users/svenj/Documents/Uni Basel/Master/Master Thesis/SC-FC")
+# setwd("C:/Users/svenj/Documents/Uni Basel/Master/Master Thesis/SC-FC")
 library(data.table)
 library(tidyverse)
 library(dplyr)
@@ -127,6 +127,15 @@ pred_fc <-    predict(fit, subset(L.caudalmiddlefrontal_1_sc_vec, L.caudalmiddle
 # predicted neural response for test subject
 pred.fc <- c(pred.fc, fit$coefficients[2] * L.caudalmiddlefrontal_1_sc_test$L.caudalmiddlefrontal_1 + fit$coefficients[1])
 View(pred.fc)
+
+# DAVID: MODEL PREDICTION THAT WORKS
+df_train = data.frame(sc = con_sc %>% filter(subj != 6) %>% pull(L.caudalmiddlefrontal_1), 
+                      fc =  con_sc %>% filter(subj != 6) %>% pull(L.caudalmiddlefrontal_1))
+df_test = data.frame(sc = con_sc %>% filter(subj == 6) %>% pull(L.caudalmiddlefrontal_1), 
+                     fc =  con_sc %>% filter(subj == 6) %>% pull(L.caudalmiddlefrontal_1))
+fit2 = lm('fc ~ sc', data = df_train)
+pred_fc2 = predict(fit2, df_test)
+# END DAVID: MODEL PREDICTION
 
 # repeat this for every subject
 
